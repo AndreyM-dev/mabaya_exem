@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -32,7 +34,7 @@ public class CampaignServiceImpl implements CampaignService {
     public CreateCampaignResponseDto createCampaign(CreateCampaignRequestDto campaign) {
 
         CategoryOfProduct category = getOrCreateCategoryIfNotExisted(campaign.getCategory());
-        Campaign campaignSaved = campaignRepository.save(Campaign.builder()
+        Campaign savedCampaign = campaignRepository.save(Campaign.builder()
                 .category(category)
                 .campaignName(campaign.getName())
                 .startDate(campaign.getStartDate())
@@ -40,11 +42,11 @@ public class CampaignServiceImpl implements CampaignService {
                 .build());
 
         return CreateCampaignResponseDto.builder()
-                .id(campaignSaved.getId())
-                .name(campaignSaved.getCampaignName())
-                .category(campaignSaved.getCampaignName())
-                .bid(campaignSaved.getBid())
-                .startDate(campaignSaved.getStartDate())
+                .id(savedCampaign.getId())
+                .name(savedCampaign.getCampaignName())
+                .category(savedCampaign.getCategory().getCategory())
+                .bid(savedCampaign.getBid())
+                .startDate(savedCampaign.getStartDate())
                 .build();
     }
 
@@ -52,7 +54,8 @@ public class CampaignServiceImpl implements CampaignService {
     public CategoryOfProduct getOrCreateCategoryIfNotExisted(String category) {
 
         log.info("Added new category " + category);
-        return categoryRepository.findCategoryOfProductByCategory(category)
+        Optional<CategoryOfProduct> category1 = categoryRepository.findCategoryOfProductByCategory(category);
+        return category1
                 .orElse(categoryRepository.save(CategoryOfProduct.builder()
                 .category(category)
                 .build()));
