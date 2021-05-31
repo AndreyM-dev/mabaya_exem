@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @Builder
-public class CreatCampaignResponseDto {
+public class CreateCampaignResponseDto {
 
     private Long id;
     private String name;
