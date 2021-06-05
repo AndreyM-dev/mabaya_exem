@@ -16,6 +16,6 @@ import javax.persistence.MappedSuperclass;
 public class AbstractEntityBase {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }

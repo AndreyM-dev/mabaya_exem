@@ -10,30 +10,30 @@ import com.mokhov.mabaya_exam.repository.CategoryRepository;
 import com.mokhov.mabaya_exam.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
 public class CampaignServiceImpl implements CampaignService {
 
-    private CategoryRepository categoryRepository;
-    private ProductRepository productRepository;
-    private CampaignRepository campaignRepository;
+
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final CampaignRepository campaignRepository;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CampaignServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository, CampaignRepository campaignRepository) {
+    public CampaignServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository, CampaignRepository campaignRepository, CategoryService categoryService) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.campaignRepository = campaignRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
     public CreateCampaignResponseDto createCampaign(CreateCampaignRequestDto campaign) {
 
-        CategoryOfProduct category = getOrCreateCategoryIfNotExisted(campaign.getCategory());
+        CategoryOfProduct category = categoryService.getOrCreateCategoryIfNotExisted(campaign.getCategory());
         Campaign savedCampaign = campaignRepository.save(Campaign.builder()
                 .category(category)
                 .campaignName(campaign.getName())
@@ -50,16 +50,7 @@ public class CampaignServiceImpl implements CampaignService {
                 .build();
     }
 
-    @Cacheable("category")
-    public CategoryOfProduct getOrCreateCategoryIfNotExisted(String category) {
 
-        log.info("Added new category " + category);
-        Optional<CategoryOfProduct> category1 = categoryRepository.findCategoryOfProductByCategory(category);
-        return category1
-                .orElse(categoryRepository.save(CategoryOfProduct.builder()
-                .category(category)
-                .build()));
-    }
 
     @Override
     public ServerAdResponseDto serveAd(String category) {

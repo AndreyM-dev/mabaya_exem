@@ -22,6 +22,6 @@ public class Product extends AbstractEntityBase {
     private String title;
     @OneToOne
     private CategoryOfProduct category;
-    private Double price;
+    private String price;
     private String productSerial;
 }
