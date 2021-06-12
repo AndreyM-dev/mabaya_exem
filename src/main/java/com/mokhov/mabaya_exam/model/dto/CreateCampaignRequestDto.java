@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 public class CreateCampaignRequestDto {
 
     private String name;
-    private LocalDate startDate;
+    private Date startDate;
     private String category;
     private Double bid;
 }

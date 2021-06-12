@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
+import java.util.Date;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 public class Campaign extends AbstractEntityBase {
 
     private String campaignName;
-    private LocalDate startDate;
+    private Date startDate;
     private Double bid;
     @OneToOne
     private CategoryOfProduct category;

@@ -10,12 +10,20 @@ import com.mokhov.mabaya_exam.repository.CategoryRepository;
 import com.mokhov.mabaya_exam.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Slf4j
 @Service
 public class CampaignServiceImpl implements CampaignService {
 
+    @Value("${campaignDaysLife}")
+    private String campaignDaysLife;
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -53,7 +61,9 @@ public class CampaignServiceImpl implements CampaignService {
 
 
     @Override
-    public ServerAdResponseDto serveAd(String category) {
+    public ServerAdResponseDto serveAd(String category) throws ParseException {
+        Date days = new SimpleDateFormat("dd").parse(campaignDaysLife);
+        campaignRepository.findAllByStartDateAfter(days);
         return null;
     }
 }

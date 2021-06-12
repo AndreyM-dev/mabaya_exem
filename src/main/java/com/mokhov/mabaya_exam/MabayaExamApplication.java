@@ -48,8 +48,6 @@ class TestDataPopulation implements CommandLineRunner {
                     .price(commerce.price())
                     .productSerial(commerce.promotionCode())
                     .build());
-
-
         }
 
     }
